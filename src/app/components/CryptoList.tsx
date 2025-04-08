@@ -7,7 +7,15 @@ import { formatCurrency } from "@/lib/formatters";
 export default function CryptoList() {
   const { data: cryptos, isLoading } = trpc.crypto.getCryptos.useQuery();
 
+  const { mutate: removeCrypto } = trpc.crypto.removeCrypto.useMutation();
+
   if (isLoading) return <div>Loading...</div>;
+
+  const handleRemoveCrypto = async (cryptoId: number) => {
+    removeCrypto({
+      id: cryptoId
+    });
+  }
 
   return (
     <>
@@ -20,7 +28,7 @@ export default function CryptoList() {
             </div>
             <div className="flex">
               <div className="mr-20">{formatCurrency(c.amount)}</div>
-              <button className="text-red-500 mr-5">Remove</button>
+              <button onClick={() => handleRemoveCrypto(c.id)} className="text-red-500 mr-5">Remove</button>
             </div>
           </div>
         </div>

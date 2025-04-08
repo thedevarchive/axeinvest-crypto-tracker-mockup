@@ -30,4 +30,17 @@ export const cryptoRouter = router({
 
       return newCrypto;
     }),
+  removeCrypto: publicProcedure
+    .input(z.object({ id: z.number() })) // Expecting an ID for removal
+    .mutation(({ input }) => {
+      const { id } = input;
+      const index = cryptos.findIndex((crypto) => crypto.id === id);
+
+      if (index === -1) {
+        throw new Error("Crypto not found");
+      }
+
+      cryptos.splice(index, 1); // Remove the crypto from the list
+      return { success: true }; // Return a success response
+    }),
 });
