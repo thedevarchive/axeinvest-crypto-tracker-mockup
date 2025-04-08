@@ -16,9 +16,13 @@ export default function Home() {
   const [amount, setAmount] = useState(0);
   const [purchasePrice, setPurchasePrice] = useState(0);
 
+  const utils = trpc.useUtils();
+
   const { data: portfolioSummary, isLoading } = trpc.crypto.getPorfolioSummary.useQuery();
   const { mutate: addCrypto, isPending } = trpc.crypto.addCrypto.useMutation({
     onSuccess: () => {
+      utils.crypto.getCryptos.invalidate();
+
       // Clear the form fields after successful mutation
       setCryptoName("");
       setAmount(0);
@@ -96,7 +100,7 @@ export default function Home() {
               <label className="p-1">
                 Purchase Price
               </label>
-              <input value={purchasePrice} onChange={(e) => setPurchasePrice(Number(e.target.value))}  className="bg-white rounded-sm outline outline-gray-300 w-190 ml-1 mt-1 p-2" placeholder="Purchase Price" />
+              <input value={purchasePrice} onChange={(e) => setPurchasePrice(Number(e.target.value))} className="bg-white rounded-sm outline outline-gray-300 w-190 ml-1 mt-1 p-2" placeholder="Purchase Price" />
             </div>
             <button onClick={handleAddCrypto} className="m-3 p-2 w-190 bg-blue-500 rounded-sm font-bold text-white" disabled={isPending}>
               {isPending ? "Adding..." : "Add"}
@@ -108,7 +112,7 @@ export default function Home() {
             <h2 className="text-xl font-semibold text-black">Your Portfolio</h2>
           </div>
           <div className="text-base ml-2 mt-2">
-            <CryptoList /> 
+            <CryptoList />
           </div>
         </div>
       </main>
