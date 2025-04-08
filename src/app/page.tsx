@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { formatCurrency, formatProfitLoss } from "@/lib/formatters";
+import { trpc } from "@/lib/trpc/client";
+
 import CryptoList from "./components/CryptoList";
 
 export default function Home() {
@@ -14,17 +16,24 @@ export default function Home() {
   const [amount, setAmount] = useState(0);
   const [purchasePrice, setPurchasePrice] = useState(0);
 
+  const { data: portfolioSummary, isLoading } = trpc.crypto.getPorfolioSummary.useQuery();
+  // Only update state if portfolioSummary is available
   useEffect(() => {
-    setInvestment(12500);
-    setCurrentValue(18730.45);
-    setProfitLoss(6230.45);
-    setProfitLossPercent(49.84);
+    if (portfolioSummary) {
+      setInvestment(portfolioSummary.investment);
+      setCurrentValue(portfolioSummary.currentValue);
+      setProfitLoss(portfolioSummary.profitLoss);
+      setProfitLossPercent(portfolioSummary.profitLossPercent);
+    }
 
     setCryptoName("BTC");
     setAmount(0);
     setPurchasePrice(1);
+  }, [portfolioSummary]);
 
-  }, []);
+  if (isLoading) {
+    return <div>Loading...</div>; // Only renders loading when true
+  }
 
   console.log(cryptoName, amount, purchasePrice);
 
@@ -90,8 +99,8 @@ export default function Home() {
           </div>
         </div>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <p>© 2023 AxeInvest. All rights reserved.</p>
+      <footer className="row-start-3 flex gap-[1px] flex-wrap items-center justify-center text-xs">
+        <p>© 2023 AxeInvest. All rights reserved. </p>
         <p className="text-center">Some of the cryptocurrencies displayed on this platform are fictional and for demonstration purposes only. They do not represent real assets or investments. All names and data are purely for mockup and creative use and do not reflect the actual value of cryptocurrency.</p>
       </footer>
     </div>

@@ -1,9 +1,12 @@
 // server/routers/user.ts
 import { router, publicProcedure } from "../trpc";
-import { cryptos } from "@/data/cryptos";
+import { cryptos, portfolios } from "@/data/cryptos";
 
 export const cryptoRouter = router({
-  getAll: publicProcedure.query(() => {
+  getCryptos: publicProcedure.query(() => {
     return cryptos;
   }),
+  getPorfolioSummary: publicProcedure.query(() => {
+    return portfolios[0]; 
+  })
 });

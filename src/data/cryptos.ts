@@ -1,3 +1,15 @@
+type PorfolioSummary = {
+    id: number, 
+    investment: number, 
+    currentValue: number, 
+    profitLoss: number, 
+    profitLossPercent: number
+}
+
+export const portfolios: PorfolioSummary[] = [
+    {id: 1, investment: 12500, currentValue: 18730.45, profitLoss: 6230.45, profitLossPercent: 49.84}
+]
+
 type Crypto = {
     id: number, 
     name: string, 
