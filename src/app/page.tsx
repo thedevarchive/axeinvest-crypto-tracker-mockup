@@ -17,6 +17,15 @@ export default function Home() {
   const [purchasePrice, setPurchasePrice] = useState(0);
 
   const { data: portfolioSummary, isLoading } = trpc.crypto.getPorfolioSummary.useQuery();
+  const { mutate: addCrypto, isPending } = trpc.crypto.addCrypto.useMutation({
+    onSuccess: () => {
+      // Clear the form fields after successful mutation
+      setCryptoName("");
+      setAmount(0);
+      setPurchasePrice(0);
+    },
+  });
+
   // Only update state if portfolioSummary is available
   useEffect(() => {
     if (portfolioSummary) {
@@ -25,17 +34,19 @@ export default function Home() {
       setProfitLoss(portfolioSummary.profitLoss);
       setProfitLossPercent(portfolioSummary.profitLossPercent);
     }
-
-    setCryptoName("BTC");
-    setAmount(0);
-    setPurchasePrice(1);
   }, [portfolioSummary]);
 
   if (isLoading) {
     return <div>Loading...</div>; // Only renders loading when true
   }
 
-  console.log(cryptoName, amount, purchasePrice);
+  const handleAddCrypto = async () => {
+    addCrypto({
+      name: cryptoName,
+      amount,
+      purchasePrice,
+    });
+  }
 
   return (
     <div className="grid grid-rows-[20px_1fr_20px] min-h-screen gap-4 sm:p-6 font-[family-name:var(--font-geist-sans)] max-w-screen-lg mx-auto">
@@ -47,16 +58,16 @@ export default function Home() {
           <div>Contact</div>
         </div>
       </div>
-      <main className="flex flex-col row-start-2 items-center bg-gray-300">
+      <main className="flex flex-col row-start-2 items-center bg-gray-300 text-black">
         <div className="bg-gray-200 rounded-lg mb-4 mt-4 w-200 h-45 space-y-4">
           <div className="bg-white p-2 rounded-lg sm:items-start">
             <h2 className="text-xl font-semibold text-black">Portfolio Summary</h2>
           </div>
           <div className="text-base ml-2 mt-2">
-            <div className="p-1 text-black">
+            <div className="p-1">
               Total Investment: {formatCurrency(investment)}
             </div>
-            <div className="p-1 text-black">
+            <div className="p-1">
               Total Current Value: {formatCurrency(currentValue)}
             </div>
             <div className="p-1 text-green-600">
@@ -73,21 +84,23 @@ export default function Home() {
               <label className="p-1 mb-1">
                 Crypto Name
               </label>
-              <input className="bg-white rounded-sm outline outline-gray-300 w-190 ml-1 mt-1 p-2" placeholder="Crypto Name" />
+              <input value={cryptoName} onChange={(e) => setCryptoName(e.target.value)} className="bg-white rounded-sm outline outline-gray-300 w-190 ml-1 mt-1 p-2" placeholder="Crypto Name" />
             </div>
             <div className="m-2">
               <label className="p-1 mb-1">
                 Amount
               </label>
-              <input className="bg-white rounded-sm outline outline-gray-300 w-190 ml-1 mt-1 p-2" placeholder="Amount" />
+              <input value={amount} onChange={(e) => setAmount(Number(e.target.value))} className="bg-white rounded-sm outline outline-gray-300 w-190 ml-1 mt-1 p-2" placeholder="Amount" />
             </div>
             <div className="m-2">
               <label className="p-1">
                 Purchase Price
               </label>
-              <input className="bg-white rounded-sm outline outline-gray-300 w-190 ml-1 mt-1 p-2" placeholder="Purchase Price" />
+              <input value={purchasePrice} onChange={(e) => setPurchasePrice(Number(e.target.value))}  className="bg-white rounded-sm outline outline-gray-300 w-190 ml-1 mt-1 p-2" placeholder="Purchase Price" />
             </div>
-            <button className="m-3 p-2 w-190 bg-blue-500 rounded-sm font-bold text-white">Add</button>
+            <button onClick={handleAddCrypto} className="m-3 p-2 w-190 bg-blue-500 rounded-sm font-bold text-white" disabled={isPending}>
+              {isPending ? "Adding..." : "Add"}
+            </button>
           </div>
         </div>
         <div className="bg-gray-200 rounded-lg mb-4 mt-4 w-200 h-auto">

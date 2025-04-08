@@ -16,7 +16,7 @@ export default function CryptoList() {
           <hr className="border-t border-gray-300 my-4" />
           <div className="p-1 text-black flex justify-between items-center">
             <div>
-              {c.name} ({c.abbreviation})
+              {c.name}
             </div>
             <div className="flex">
               <div className="mr-20">{formatCurrency(c.amount)}</div>

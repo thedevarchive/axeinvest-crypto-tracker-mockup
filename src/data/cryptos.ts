@@ -13,16 +13,16 @@ export const portfolios: PorfolioSummary[] = [
 type Crypto = {
     id: number, 
     name: string, 
-    abbreviation: string, 
-    amount: number
+    amount: number, 
+    purchasePrice: number
 }; 
 
 export const cryptos: Crypto[] = [
-    { id: 1, name: "Bitcoin", abbreviation: "BTC", amount: 45230.15 },
-    { id: 2, name: "Ethereum", abbreviation: "ETH", amount: 3456.78 },
-    { id: 3, name: "Cardano", abbreviation: "ADA", amount: 1.25},
-    { id: 4, name: "Solana", abbreviation: "SOL", amount: 95.82 },
-    { id: 5, name: "T3 Coin", abbreviation: "T33", amount: 33.33 },
-    { id: 6, name: "Funni Money", abbreviation: "FUNNI", amount: 100.15 },
-    { id: 7, name: "Axe Coin", abbreviation: "AXECOIN", amount: 20.17 },
+    { id: 1, name: "Bitcoin (BTC)", amount: 45230.15, purchasePrice: 1 },
+    { id: 2, name: "Ethereum (ETH)", amount: 3456.78, purchasePrice: 30000 },
+    { id: 3, name: "Cardano (ADA)", amount: 1.25, purchasePrice: 1},
+    { id: 4, name: "Solana (SOL)", amount: 95.82, purchasePrice: 50},
+    { id: 5, name: "T3 Coin (T33)", amount: 103.33, purchasePrice: 33.33 },
+    { id: 6, name: "Funni Money (FUNNI)", amount: 100.15, purchasePrice: 69 },
+    { id: 7, name: "Axe Coin (AXECOIN)", amount: 20.17, purchasePrice: 77.15 },
   ];
