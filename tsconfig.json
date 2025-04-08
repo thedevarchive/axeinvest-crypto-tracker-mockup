@@ -18,8 +18,9 @@
         "name": "next"
       }
     ],
+    "baseUrl": "./src",   // Base path for resolution
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["*"]         // Allow '@' alias for imports from 'src'
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
