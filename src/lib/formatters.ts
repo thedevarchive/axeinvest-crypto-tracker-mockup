@@ -7,7 +7,7 @@ export const formatCurrency = (amount: number): string => {
 
 export const formatProfitLoss = (amount: number): string => {
     let sign: string = "";
-    sign = amount > 0 ? "+" : "-";
+    sign = amount !== 0 ? ( amount > 0 ? "+" : "-") : "";
     return sign + new Intl.NumberFormat('en-US', {
         style: 'currency',
         currency: 'USD',

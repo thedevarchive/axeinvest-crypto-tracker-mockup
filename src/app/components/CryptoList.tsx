@@ -4,10 +4,9 @@
 import { trpc } from "@/lib/trpc/client";
 import { formatCurrency } from "@/lib/formatters";
 
-
 export default function CryptoList() {
   const utils = trpc.useUtils();
-  
+
   const { data: cryptos, isLoading } = trpc.crypto.getCryptos.useQuery();
 
   const { mutate: removeCrypto } = trpc.crypto.removeCrypto.useMutation({
